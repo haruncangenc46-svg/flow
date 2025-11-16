@@ -1,0 +1,12 @@
+body {
+  background-color: #f5f7fb;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.table thead th {
+  border-bottom: 2px solid #f1f1f1;
+}

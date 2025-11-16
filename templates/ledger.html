@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Muhasebe Defteri</h3>
+  {% if current_user.role in ['admin', 'manager'] %}
+  <a class="btn btn-primary" href="{{ url_for('accounting.create_entry') }}">Yeni Kayıt</a>
+  {% endif %}
+</div>
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="card text-bg-success h-100">
+      <div class="card-body">
+        <h6 class="card-subtitle">Gelir</h6>
+        <p class="display-6">₺{{ '%.2f'|format(totals.income) }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-bg-danger h-100">
+      <div class="card-body">
+        <h6 class="card-subtitle">Gider</h6>
+        <p class="display-6">₺{{ '%.2f'|format(totals.expense) }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-bg-secondary h-100">
+      <div class="card-body">
+        <h6 class="card-subtitle">Bakiye</h6>
+        <p class="display-6">₺{{ '%.2f'|format(totals.balance) }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tarih</th>
+            <th>Tür</th>
+            <th>Açıklama</th>
+            <th>Tutar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries %}
+          <tr>
+            <td>{{ entry.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+            <td>
+              <span class="badge bg-{{ 'success' if entry.entry_type == 'income' else 'danger' }}">
+                {{ 'Gelir' if entry.entry_type == 'income' else 'Gider' }}
+              </span>
+            </td>
+            <td>{{ entry.description }}</td>
+            <td>₺{{ '%.2f'|format(entry.amount) }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted">Kayıt bulunamadı</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
