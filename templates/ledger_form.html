@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Yeni Muhasebe Kaydı</h5>
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label">Tür</label>
+            <select class="form-select" name="entry_type" required>
+              <option value="income">Gelir</option>
+              <option value="expense">Gider</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Açıklama</label>
+            <input type="text" class="form-control" name="description" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tutar</label>
+            <input type="number" step="0.01" class="form-control" name="amount" required>
+          </div>
+          <div class="d-flex justify-content-end">
+            <a href="{{ url_for('accounting.ledger') }}" class="btn btn-outline-secondary me-2">İptal</a>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

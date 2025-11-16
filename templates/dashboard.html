@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card text-bg-light h-100">
+      <div class="card-body">
+        <h5 class="card-title">Toplam Stok Değeri</h5>
+        <p class="display-6">₺{{ '%.2f'|format(total_stock_value) }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">Son İşlemler</h5>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Ürün</th>
+                <th>Tür</th>
+                <th>Miktar</th>
+                <th>Tutar</th>
+                <th>Tarih</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in recent_transactions %}
+              <tr>
+                <td>{{ t.product.name }}</td>
+                <td>
+                  <span class="badge bg-{{ 'success' if t.transaction_type == 'purchase' else 'danger' }}">
+                    {{ 'Alım' if t.transaction_type == 'purchase' else 'Satış' }}
+                  </span>
+                </td>
+                <td>{{ t.quantity }}</td>
+                <td>₺{{ '%.2f'|format(t.total_amount) }}</td>
+                <td>{{ t.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="5" class="text-center text-muted">Henüz işlem yok</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
